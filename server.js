@@ -1,4 +1,7 @@
-require('dotenv').config();
+//dotenv is a library that allow read environment variables,defined in an env file
+//.connfig() Read the file .env every keys in the file config.env that are land in the object process.env
+const dotenv = require('dotenv');
+dotenv.config({ path: './config.env' }); 
 //Framework of express used for create framework and API
 const express = require('express');
 //mongoose is for ease for the interaction with the database of MongoDB
@@ -17,9 +20,12 @@ app.use(cors({origin: 'http://127.0.0.1:5501', // Cambia esto al origen de tu cl
 //This set up the middleware of express for process bodies JSON and stablish an limit of data 
 //That can send to the body of get
 app.use(express.json({ limit: '10mb' }));
-const dburi = process.env.DATABASE
+//database = have te keys load in the  object process.env 
+const database = process.env.DATABASE;
 //This if for conect with MongoDB Atlas
-mongoose.connect('mongodb+srv://david:pr4Ti3rqXaWJFOL3@cluster0.9gdfb.mongodb.net/countries', {
+
+console.log(dotenv)
+mongoose.connect(database, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
@@ -34,7 +40,7 @@ app.post('/saveCountries', async (req, res) => {
         await Country.insertMany(countries);
         res.status(200).json({ message: 'Countries saved sucesfully' });
     } catch (error) {
-        console.error('Error al guardar los países en MongoDB:', error);
+        console.error('Issue to save te countries in MongoDB:', error);
         res.status(500).json({ message: 'issue to save countries in MongoDB', error: error.message });
     }
 });

@@ -82,10 +82,16 @@ body.dark-mode{
     padding: 1rem;
 }
 
-.form-serach input {
+.form-search i {
+    opacity:05;
+}
+
+.form-search input {
     border:none;
     outline: none;
     margin-left: 1rem;
+    background-color:var(--color-bg-secondary);
+    color: var(--color-text)
 }
 
 /*Main*/
@@ -139,6 +145,14 @@ body.dark-mode{
         flex-direction: column;
         align-items: flex-start;
     }
+   .form-search{
+    width:100%;
+    margin-bottom: 1rem;
+   }
+   
+   .form-serach input{
+    width: 100%;
+   }
     .grid{
         grid-template-columns: repeat(1, minmax(0, 1fr));
     }

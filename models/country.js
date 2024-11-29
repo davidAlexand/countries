@@ -3,18 +3,19 @@ const mongoose = require('mongoose');
 //Create a new schema of Mongoose with the name SchemaCountry,this schema define the structure of data of countries
 const countrySchema = new mongoose.Schema({
     flags: {
-    png: { type: String },
+    //Unique:true is for,onli rquiere unique data
+    png: { type: String, unique: true },
   },
   name: {
-    common: { type: String, required: true },
+    common: { type: String, required: true , unique: true},
   },
-  capital: [{ type: String }],
-  region: { type: String },
-  subregion: { type: String },
-  cca2: { type: String },  
-  area: { type: Number },
-  flag: { type: String },
-  population: { type: Number },
+  capital: [{ type: String, unique: true }],
+  region: { type: String, unique: true },
+  subregion: { type: String , unique: true},
+  cca2: { type: String, unique: true },  
+  area: { type: Number, unique: true },
+  flag: { type: String,unique: true },
+  population: { type: Number, unique: true },
   
 });
 //here is  create a model of moongose called Country based in the countrySchema

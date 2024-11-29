@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/custom-select.css">
 </head>
 
 <body>
@@ -23,13 +24,14 @@
     </nav>
 
     <div class="container filter-content my-2">
-        <form class="form-search">
+        <form class="form-search" id="form">
             <i class="fas fa-search"></i>
-            <input type="text" id="country-search" placeholder="Enter country">
+            <input type="text" placeholder="Enter country" id="inputForm" />
         </form>
-        <div>
+        <div class="custom-select">
             <select id="region-select">
                 <option value="">Filter by region</option>
+                <option value="">Todos</option>
                 <option value="Africa">Africa</option>
                 <option value="Americas">America</option>
                 <option value="Asia">Asia</option>
@@ -51,6 +53,8 @@
 
     <!-- Solo incluir el script una vez -->
     <script type="module" src="./js/main.js"></script>
+    <script type="module" src="./js/form.js"></script>
+    <script type="module" src="./js/custom-select.js"></script>
     <script type="module" src="./js/dark-mode.js"></script>
 </body>
 
