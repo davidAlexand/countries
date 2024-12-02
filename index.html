@@ -31,7 +31,7 @@
         <div class="custom-select">
             <select id="region-select">
                 <option value="">Filter by region</option>
-                <option value="">Todos</option>
+                <option value="Countries">Todos</option>
                 <option value="Africa">Africa</option>
                 <option value="Americas">America</option>
                 <option value="Asia">Asia</option>
@@ -40,17 +40,17 @@
             </select>
         </div>
     </div>
-
     <!-- Contenedor para los países -->
     <ul id="country-list"></ul>
-
     <main class="container grid">
         <article class="card">
             <h2>countries</h2>
             <div id="countries-container"></div>
         </article>
     </main>
-
+    <div id="pagination-container">
+        <!-- Aquí se generarán los botones de paginación -->
+    </div>
     <!-- Solo incluir el script una vez -->
     <script type="module" src="./js/main.js"></script>
     <script type="module" src="./js/form.js"></script>

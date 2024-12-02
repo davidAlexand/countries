@@ -1,20 +1,19 @@
  /* The container must be positioned relative: */
  .custom-select {
-    position: relative;
+  position: relative;
   }
   
-  .custom-select select {
+  .custom-select select { 
     display: none; /*hide original SELECT element: */
   }
-  
   .select-selected {
+    position: absolute;
     background-color:var(--color-bg-secondary);
     box-shadow: var(--box-shadow);
   }
   
   /* Style the arrow inside the select element: */
   .select-selected:after {
-    position: absolute;
     content: "";
     top: 21px;
     right: 10px;
@@ -25,13 +24,11 @@
   }
   
   /* Point the arrow upwards when the select box is open (active): */
-  .select-selected.select-arrow-active:after {
-    border-color:var(--color-text) transparent transparent transparent;
-    top: 14px;
-  }
+ 
   
   /* style the items (options), including the selected item: */
   .select-items div,.select-selected {
+    position:static;
     color: var(--color-text);
     padding: 18px 16px;
     border: 1px solid transparent;

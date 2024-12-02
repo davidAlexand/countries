@@ -90,6 +90,10 @@ async function getCountriesFromServer() {
         isFetching = false;
     }
 }
+
+let currentPage = 1; // Página actual
+const countriesPerPage = 50; // Número de países por página
+
 //Define an export an Asynchronous function, with async we can use await to manage promises
 export async function displayCountries(countriesToDisplay) {
     try {
@@ -113,9 +117,20 @@ export async function displayCountries(countriesToDisplay) {
             document.getElementById('countries-container').innerHTML = '<p>No se encontraron países.</p>';
             return;
         }
+        // Calcular el número total de páginas
+
+        const totalPages = Math.ceil(countries.length / countriesPerPage);
+
+        const startIndex = (currentPage - 1) * countriesPerPage;
+
+        const endIndex = startIndex + countriesPerPage;
+
+        const paginatedCountries = countries.slice(startIndex, endIndex);
+
         const mainGrid = document.querySelector('.grid');
         mainGrid.innerHTML = ''; 
-        countries.forEach(country => {
+        
+        paginatedCountries.forEach(country => {
             const card = document.createElement('div');
             card.classList.add('card');
             const cardContent = document.createElement('div');
@@ -146,9 +161,38 @@ export async function displayCountries(countriesToDisplay) {
             card.appendChild(cardContent);
             mainGrid.appendChild(card);
         });
+        renderPagination(totalPages);
     } catch (error) {
         console.error('issue to show the countries:', error);
     }
+}
+// Función para renderizar los botones de paginación
+
+function renderPagination(totalPages) {
+
+    const paginationContainer = document.getElementById('pagination-container');
+
+    paginationContainer.innerHTML = ''; // Limpiar el contenedor
+
+
+    for (let i = 1; i <= totalPages; i++) {
+
+        const pageButton = document.createElement('button');
+
+        pageButton.textContent = i;
+
+        pageButton.onclick = () => {
+
+            currentPage = i;
+
+            displayCountries(); // Llamar a la función para mostrar los países de la nueva página
+
+        };
+
+        paginationContainer.appendChild(pageButton);
+
+    }
+
 }
 // Execute the displayCountries function when the DOM loads
 document.addEventListener('DOMContentLoaded', () => displayCountries());
