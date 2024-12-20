@@ -2,6 +2,11 @@
 import { getAllCountries } from './countryLayer.js';
 import { formClient } from './form.js';
 import {filterRegion} from './custom-select.js'
+//We select the modal and the iframe
+//Function to open the modal and show the Google map
+const modal = document.getElementById('mapModal');
+const span = document.getElementsByClassName('close')[0];
+const googleMap = document.getElementById('googleMap');
 //This is a asincronic function that load the countries from the API  and then saved in the base of data with an aplication post
 async function loadAndSaveCountries() {
    //Inside the block try called the function getAllCountries(),as is  an asincronic function ,wait that return the data
@@ -75,7 +80,7 @@ async function getCountriesFromServer() {
         console.log(`Received ${countries.length} countries from API`);
     //This for verify the lenght of the array if is more that 300 data show the message.
     //This is for avoid the duplicate data
-        if (countries.length > 300) {  
+        if (countries.length > 250) {  
             console.warn('Received more countries than expected. Might be duplicate data.');
         }
      //Here asing the array countries to the variable cachedCountries for load the data of the cached.
@@ -90,10 +95,30 @@ async function getCountriesFromServer() {
         isFetching = false;
     }
 }
-
-let currentPage = 1; // Página actual
-const countriesPerPage = 50; // Número de países por página
-
+///////////////////////////////////////
+function showMap(lat, lng) {
+    //Building Google Map URL
+    const mapUrl = `https://www.google.com/maps?q=${lat},${lng}&z=6&output=embed`;
+    //We assign the URL to the map iframe
+    googleMap.src = mapUrl;
+    //Show the modal
+    modal.style.display = 'block';
+}
+//Close the modal wuen the user ,click the button of close  
+span.onclick = () => {
+    modal.style.display = 'none';
+    googleMap.src = ''; //Clear the iframe to avoid loading the map unnecessarily
+};
+//When you click outside the modal, it also closes
+window.onclick = (event) => {
+    if (event.target === modal) {
+        modal.style.display = 'none';
+        googleMap.src = ''; //Clear el iframe
+    }
+};
+/////////////////////////////////////
+let currentPage = 1; //Actual page
+const countriesPerPage = 50; //Number of countries per page
 //Define an export an Asynchronous function, with async we can use await to manage promises
 export async function displayCountries(countriesToDisplay) {
     try {
@@ -117,19 +142,19 @@ export async function displayCountries(countriesToDisplay) {
             document.getElementById('countries-container').innerHTML = '<p>No se encontraron países.</p>';
             return;
         }
-        // Calcular el número total de páginas
-
+        //Calculate the total number of pages
+        //Countries.length: Gets the total number of countries in the countries list.
+        //CountriesPerPage: Defines how many countries will be displayed on each page.
+        //countries.length / countries Per Page: Divide the total number of countries by the number of countries per page to get how many full pages are needed.
         const totalPages = Math.ceil(countries.length / countriesPerPage);
-
+        //currentPage: This is the current page selected.
+        //CurrentPage - 1: We subtract 1 to get the pages in terms of an index starting from 0.
+        //CountriesPerPage: Multiplies the index of the current page by the number of countries per page to calculate the first country index that corresponds to this page.
         const startIndex = (currentPage - 1) * countriesPerPage;
-
         const endIndex = startIndex + countriesPerPage;
-
         const paginatedCountries = countries.slice(startIndex, endIndex);
-
         const mainGrid = document.querySelector('.grid');
-        mainGrid.innerHTML = ''; 
-        
+        mainGrid.innerHTML = '';      
         paginatedCountries.forEach(country => {
             const card = document.createElement('div');
             card.classList.add('card');
@@ -141,6 +166,13 @@ export async function displayCountries(countriesToDisplay) {
             countryImage.classList.add('img');
             const countryName = document.createElement('h2');
             countryName.textContent = country.name.common;
+            //event onclick
+            countryImage.onclick = () => {
+                const latlng = country.latlng; // latlng contains the geographic coordinates
+                if (latlng) {
+                    showMap(latlng[0], latlng[1]); 
+                }
+            };
             const countryDetails = document.createElement('ul');
             const details = [
                 { label: 'Capital', value: country.capital },
@@ -152,7 +184,7 @@ export async function displayCountries(countriesToDisplay) {
             ];
             details.forEach(detail => {
                 const item = document.createElement('p');
-                item.textContent = `${detail.label}: ${detail.value}`;
+                item.innerHTML = `<b>${detail.label}:</b> ${detail.value}`;
                 countryDetails.appendChild(item);
             });
             card.appendChild(countryImage);
@@ -161,38 +193,28 @@ export async function displayCountries(countriesToDisplay) {
             card.appendChild(cardContent);
             mainGrid.appendChild(card);
         });
+        //FUncion for do pages every 50 countries
         renderPagination(totalPages);
     } catch (error) {
         console.error('issue to show the countries:', error);
     }
 }
-// Función para renderizar los botones de paginación
-
+//Function to render pagination buttons
 function renderPagination(totalPages) {
-
     const paginationContainer = document.getElementById('pagination-container');
-
-    paginationContainer.innerHTML = ''; // Limpiar el contenedor
-
-
+    paginationContainer.innerHTML = ''; // Clean the container    
     for (let i = 1; i <= totalPages; i++) {
-
         const pageButton = document.createElement('button');
-
         pageButton.textContent = i;
-
+        pageButton.className = 'pagination-button'; // Agrega una clase a cada botón
+        
         pageButton.onclick = () => {
-
             currentPage = i;
-
-            displayCountries(); // Llamar a la función para mostrar los países de la nueva página
-
+            displayCountries(); // Call the function to display the countries on the new page
         };
-
+       
         paginationContainer.appendChild(pageButton);
-
     }
-
 }
 // Execute the displayCountries function when the DOM loads
 document.addEventListener('DOMContentLoaded', () => displayCountries());

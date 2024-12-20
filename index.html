@@ -40,18 +40,29 @@
             </select>
         </div>
     </div>
-    <!-- Contenedor para los países -->
-    <ul id="country-list"></ul>
+    <!-- Container of countries -->
     <main class="container grid">
         <article class="card">
             <h2>countries</h2>
             <div id="countries-container"></div>
         </article>
     </main>
-    <div id="pagination-container">
-        <!-- Aquí se generarán los botones de paginación -->
+    <!-- Modal -->
+    <div id="mapModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>country location</h2>
+            <div id="mapContainer">
+                <!-- Here the iframe with the map will be loaded-->
+                <iframe id="googleMap" width="100%" height="400" frameborder="0" style="border:0;"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
     </div>
-    <!-- Solo incluir el script una vez -->
+    <div id="pagination-container">
+        <!-- Bottoms for pagination -->
+    </div>
+    <!-- Only include the script once-->
     <script type="module" src="./js/main.js"></script>
     <script type="module" src="./js/form.js"></script>
     <script type="module" src="./js/custom-select.js"></script>
